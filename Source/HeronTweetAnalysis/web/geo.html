@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<title>Googlemaps Heatmap Layer</title>
+<style>
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+}
+
+#map-canvas {
+	height: 100%
+}
+
+h1 {
+	position: absolute;
+	background: black;
+	color: white;
+	padding: 10px;
+	font-weight: 200;
+	z-index: 10000;
+}
+
+#all-examples-info {
+	position: absolute;
+	background: white;
+	font-size: 16px;
+	padding: 20px;
+	bottom: 20px;
+	width: 350px;
+	line-height: 150%;
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+</style>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="js/heatmap.js"></script>
+<script src="js/gmaps-heatmap.js"></script>
+</head>
+<body>
+	<h1>Tweets around the world</h1>
+	<div id="map-canvas"></div>
+	<script>
+		function readTextFile(file) {
+			var allText;
+			var rawFile = new XMLHttpRequest();
+			rawFile.open("GET", file, false);
+			rawFile.onreadystatechange = function() {
+				if (rawFile.readyState === 4) {
+					if (rawFile.status === 200 || rawFile.status == 0) {
+						allText = rawFile.responseText;
+						//     console.log(allText);
+					}
+				}
+			}
+			rawFile.send(null);
+			return allText
+		}
+	</script>
+	<script>
+		// map center
+		var myLatlng = new google.maps.LatLng(25.6586, -80.3568);
+		// map options,
+		var myOptions = {
+			zoom : 2,
+			center : myLatlng
+		};
+		var dataf = readTextFile("flaregeo.json");
+		// standard map
+		map = new google.maps.Map(document.getElementById("map-canvas"),
+				myOptions);
+		map.set('styles', [ {
+			"featureType" : "all",
+			"elementType" : "labels.text.fill",
+			"stylers" : [ {
+				"saturation" : 36
+			}, {
+				"color" : "#000000"
+			}, {
+				"lightness" : 40
+			} ]
+		}, {
+			"featureType" : "all",
+			"elementType" : "labels.text.stroke",
+			"stylers" : [ {
+				"visibility" : "on"
+			}, {
+				"color" : "#000000"
+			}, {
+				"lightness" : 16
+			} ]
+		}, {
+			"featureType" : "all",
+			"elementType" : "labels.icon",
+			"stylers" : [ {
+				"visibility" : "off"
+			} ]
+		}, {
+			"featureType" : "administrative",
+			"elementType" : "geometry.fill",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 20
+			} ]
+		}, {
+			"featureType" : "administrative",
+			"elementType" : "geometry.stroke",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 17
+			}, {
+				"weight" : 1.2
+			} ]
+		}, {
+			"featureType" : "landscape",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 20
+			} ]
+		}, {
+			"featureType" : "poi",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 21
+			} ]
+		}, {
+			"featureType" : "road.highway",
+			"elementType" : "geometry.fill",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 17
+			} ]
+		}, {
+			"featureType" : "road.highway",
+			"elementType" : "geometry.stroke",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 29
+			}, {
+				"weight" : 0.2
+			} ]
+		}, {
+			"featureType" : "road.arterial",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 18
+			} ]
+		}, {
+			"featureType" : "road.local",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 16
+			} ]
+		}, {
+			"featureType" : "transit",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 19
+			} ]
+		}, {
+			"featureType" : "water",
+			"elementType" : "geometry",
+			"stylers" : [ {
+				"color" : "#000000"
+			}, {
+				"lightness" : 17
+			} ]
+		} ])
+		// heatmap layer
+		heatmap = new HeatmapOverlay(map, {
+			// radius should be small ONLY if scaleRadius is true (or small radius is intended)
+			"radius" : 2,
+			"maxOpacity" : 1,
+			// scales the radius based on map zoom
+			"scaleRadius" : true,
+			// if set to false the heatmap uses the global maximum for colorization
+			// if activated: uses the data maximum within the current map boundaries 
+			//   (there will always be a red spot with useLocalExtremas true)
+			"useLocalExtrema" : true,
+			// which field name in your data represents the latitude - default "lat"
+			latField : 'lat',
+			// which field name in your data represents the longitude - default "lng"
+			lngField : 'lng',
+			// which field name in your data represents the data value - default "value"
+			valueField : 'count'
+		});
+		var t = dataf.replace(/^"|"$/g, '');
+		console.log(eval(t));
+		var testData = {
+			max : 8,
+			data : eval(t)
+		};
+		console.log(testData)
+		heatmap.setData(testData);
+	</script>
+	<script>
+		function autoRefresh1() {
+			window.location.reload();
+		}
+
+		setInterval('autoRefresh1()', 30000);
+	</script>
+</body>
+</html>

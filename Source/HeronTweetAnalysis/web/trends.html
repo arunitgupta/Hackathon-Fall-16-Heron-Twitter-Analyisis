@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+	<title>D3 CSV</title>
+
+</head>
+<style type="text/css">
+body {
+background:#e7edde;
+background-image:url("123.jpg") ;    
+}</style>
+<body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="js/d3.layout.cloud.js"></script>
+<script type="text/javascript">
+
+var fill = d3.scale.category20();
+
+var cityData = [],
+	cityPop = [], 
+    width = 3000, 
+    height = 1800;
+
+d3.csv("flaretrends.csv", function(data) {
+    // build the list of city names
+    data.forEach( function (d) {
+        cityData.push(d.word);
+       // console.log(d.population);
+        cityPop.push(d.count);
+    });
+
+    d3.layout.cloud().size([500, 500])
+        .words(cityData.map(function(_,i) {
+       // console.log(cityData[i] + " " + cityPop[i] );
+            return {text: cityData[i], size:cityPop[i]};
+        }))
+        .rotate(0)
+        .font("Impact")
+        .fontSize(function(d) { return d.size; })
+        .on("end", draw)
+        .start();
+
+});
+
+function draw(words) {
+var svg = d3.select("body").append("svg")
+    .attr("width", 2000)
+    .attr("height", 2000)
+    .append("g")
+    .attr("transform", "translate(600,300)").style("background-color","#123456")
+    .selectAll("text")
+    .data(words)
+    .enter().append("text")
+    .style("font-size", function(d) { 
+    return d.size+"px"; })
+    .style("font-family", "Impact")
+    .style("fill", function(d, i) { return fill(i); })
+    .attr("text-anchor", "middle")
+    .attr("transform", function(d) {
+        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+    })
+    .text(function(d) { return d.text; });
+    
+}	
+</script>
+<script>
+function autoRefresh_div()
+ {
+      $("body").load("trends.html");// a function which will load data from other file after x seconds
+  }
+ 
+  setInterval('autoRefresh_div()', 30000);
+</script>
+  </body>
+</html>
