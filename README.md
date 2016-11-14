@@ -7,11 +7,17 @@ This project is about real time analysis of tweets using Twitter Heron.
    - Visualizing the tweets on google map using heatmap
 
 * **Guidelined to run the program:** 
-dsdsd   - Run the topologies as a Java Application (No need of heron setup or topology submit to heron)
+   - Run the topologies as a Java Application (No need of heron setup or topology submit to heron)
    - Open the project folder in terminal, go to folder called web and type following command.
         ```
         python -m SimpleHTTPServer
         
-       
-       
+       ```
+   - Go to web browser and start type
+      ```
+      http://localhost:<port_number>
+      ```
+   - You will be redirected to index.html page.
+      
+   
        
