@@ -11,7 +11,6 @@ This project is about real time analysis of tweets using Twitter Heron.
    - Open the project folder in terminal, go to folder called web and type following command.
         ```
         python -m SimpleHTTPServer
-        
        ```
    - Go to web browser and start type
       ```
