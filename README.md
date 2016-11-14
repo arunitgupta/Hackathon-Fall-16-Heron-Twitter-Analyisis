@@ -8,11 +8,13 @@ This project is about real time analysis of tweets using Twitter Heron.
 
 * **Guidelined to run the program:** 
    - Run the topologies as a Java Application (No need of heron setup or topology submit to heron)
-   - Open the project folder in terminal, go to folder called web and type following command.
+   - Open the project folder in terminal, go to folder called web and type following command:
+   
         ```
         python -m SimpleHTTPServer
        ```
-   - Go to web browser and start type
+   - Go to web browser and type:
+   
       ```
       http://localhost:<port_number>
       ```
