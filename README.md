@@ -1,6 +1,7 @@
 # Hackathon-Fall-16-Heron-Twitter-Analyisis
 This project is about real time analysis of tweets using Twitter Heron.
-<B>YOUTUBE LINK: </B> <a href= "https://www.youtube.com/watch?v=xtJpm6Xj8Go&feature=youtu.be"></a>
+<br>
+<B>YOUTUBE LINK: </B>  https://www.youtube.com/watch?v=xtJpm6Xj8Go&feature=youtu.be
 * **Objective:** 
    - Tracking the top 25 trends in real time
    - Tracking the top 10 trends categorized based on source such as web, ios, android, facebook
